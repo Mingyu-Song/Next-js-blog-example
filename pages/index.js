@@ -1,4 +1,5 @@
-import Head from 'next/head'
+import Head from "next/head";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,7 +11,12 @@ export default function Home() {
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Read {/* 클라이언트 사이드 이동 */}
+          {/* 기본으로 수행하는 이동보다 클라이언트 사이드 이동 사용하여 페이지 전환이 빠름 */}
+          {/* 개발자 도구에서 html태그에 백그라운드 컬러를 주면 페이지 전환하여도 깜빡임 없이 전환됨 */}
+          <Link href="/posts/first-post">
+            <a>this page!</a>
+          </Link>
         </h1>
 
         <p className="description">
@@ -54,7 +60,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
         </a>
       </footer>
@@ -205,5 +211,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
+  );
 }
