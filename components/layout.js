@@ -3,8 +3,10 @@ import styles from "./layout.module.css";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 
-const name = "Your Name";
-export const siteTitle = "Next.js Sample Website";
+const name = "SMG DayLog";
+const img =
+  "https://avatars2.githubusercontent.com/u/61491189?s=460&u=bdbfe5578f8e5616ba347438cd42c09f8394b150&v=4";
+export const siteTitle = "SMG DayLog";
 
 export default function Layout({ children, home }) {
   return (
@@ -28,7 +30,7 @@ export default function Layout({ children, home }) {
         {home ? (
           <>
             <img
-              src="/images/profile.jpg"
+              src={img}
               className={`${styles.headerHomeImage} ${utilStyles.borderCircle}`}
               alt={name}
             />
@@ -39,7 +41,7 @@ export default function Layout({ children, home }) {
             <Link href="/">
               <a>
                 <img
-                  src="/images/profile.jpg"
+                  src={img}
                   className={`${styles.headerImage} ${utilStyles.borderCircle}`}
                   alt={name}
                 />
