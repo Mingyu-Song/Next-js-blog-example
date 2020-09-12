@@ -6,6 +6,8 @@ import Link from "next/link";
 import Date from "../components/date";
 import styled from "styled-components";
 import { useState } from "react";
+import Sun from "../components/svg/sun";
+import Moon from "../components/svg/moon";
 
 export default function Home({ allPostsData }) {
   const [dark, setDark] = useState(true);
@@ -18,6 +20,10 @@ export default function Home({ allPostsData }) {
         <h2 className={utilStyles.headingLg}>Logs</h2>
         <Toggle onClick={() => setDark(!dark)} dark={dark}>
           <ToggleHandle dark={dark} />
+          <span>
+            <Moon />
+            <Sun />
+          </span>
         </Toggle>
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
@@ -50,10 +56,28 @@ const Toggle = styled.div`
   width: 48px;
   height: 24px;
   border-radius: 12px;
+  cursor: pointer;
+  position: relative;
   background-color: ${(props) => (props.dark ? "gray" : "gray")};
+  span {
+    display: flex;
+    width: 36px;
+    justify-content: space-between;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    .moon * {
+      fill: ${(props) => (props.dark ? "black" : "transparent")};
+    }
+    .sun * {
+      fill: ${(props) => (props.dark ? "transparent" : "white")};
+    }
+  }
 `;
 
 const ToggleHandle = styled.div`
+  z-index: 100;
   width: 20px;
   height: 20px;
   border-radius: 50%;
