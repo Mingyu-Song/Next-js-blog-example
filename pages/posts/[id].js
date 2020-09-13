@@ -3,10 +3,14 @@ import { getAllPostIds, getPostData } from "../../lib/posts";
 import Date from "../../components/date";
 import utilStyles from "../../styles/utils.module.css";
 import Head from "next/head";
+import { useContext } from "react";
+import darkModeContext from "../../context/darkMode";
 
 export default function Post({ postData }) {
+  const darkModeChange = useContext(darkModeContext);
+  const [dark, setDark] = darkModeChange;
   return (
-    <Layout>
+    <Layout dark={dark}>
       <Head>
         <title>{postData.title} :: SMG DayLog</title>
       </Head>

@@ -74,4 +74,6 @@ export default function Layout({ children, home, dark }) {
 const Container = styled.div`
   background-color: ${({ dark }) => (dark ? "black" : "white")};
   color: ${({ dark }) => (dark ? "white" : "black")};
+  height: 100vh;
+  overflow: auto;
 `;

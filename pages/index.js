@@ -5,12 +5,15 @@ import { getSortedPostsData } from "../lib/posts";
 import Link from "next/link";
 import Date from "../components/date";
 import styled from "styled-components";
-import { useState } from "react";
 import Sun from "../components/svg/sun";
 import Moon from "../components/svg/moon";
+import darkModeContext from "../context/darkMode";
+import { useContext } from "react";
 
 export default function Home({ allPostsData }) {
-  const [dark, setDark] = useState(true);
+  const darkModeChange = useContext(darkModeContext);
+  const dark = darkModeChange[0];
+
   return (
     <Layout home dark={dark}>
       <Head>
@@ -18,7 +21,7 @@ export default function Home({ allPostsData }) {
       </Head>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Logs</h2>
-        <Toggle onClick={() => setDark(!dark)} dark={dark}>
+        <Toggle onClick={() => darkModeChange[1](!dark)} dark={dark}>
           <ToggleHandle dark={dark} />
           <span>
             <Moon />
