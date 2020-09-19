@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
-import { getSortedPostsData } from "../lib/posts";
+import { getSortedPostsData, getAllPostIds } from "../lib/posts";
 import Link from "next/link";
 import Date from "../components/date";
 import styled from "styled-components";
@@ -10,10 +10,9 @@ import Moon from "../components/svg/moon";
 import darkModeContext from "../context/darkMode";
 import { useContext } from "react";
 
-export default function Home({ allPostsData }) {
+export default function Home({ slicedPostsData }) {
   const darkModeChange = useContext(darkModeContext);
   const dark = darkModeChange[0];
-
   return (
     <Layout home dark={dark}>
       <Head>
@@ -29,7 +28,7 @@ export default function Home({ allPostsData }) {
           </span>
         </Toggle>
         <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
+          {slicedPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
               <Link href="/posts/[id]" as={`/posts/${id}`}>
                 <a>{title}</a>
@@ -41,15 +40,49 @@ export default function Home({ allPostsData }) {
             </li>
           ))}
         </ul>
+        <div>1페이지</div>
+        <div>2페이지</div>
       </section>
     </Layout>
   );
 }
-export async function getStaticProps() {
+
+export async function getStaticPaths() {
+  const postCount = getAllPostIds();
+  let pageCount = 1;
+  if (postCount.length % 3 !== 0) {
+    pageCount = (postCount.length % 3) + 1;
+  } else {
+    pageCount = postCount.length % 3;
+  }
+  const pages = () => {
+    return Array(pageCount)
+      .fill(0)
+      .map((x, i) => {
+        return {
+          params: {
+            page: (i + 1).toString(),
+          },
+        };
+      });
+  };
+  const paths = pages();
+
+  console.log(paths);
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  console.log(params.page);
+  const page = params.page - 1 || 0;
   const allPostsData = getSortedPostsData();
+  const slicedPostsData = allPostsData.slice(page * 3, page * 3 + 3);
   return {
     props: {
-      allPostsData,
+      slicedPostsData,
     },
   };
 }

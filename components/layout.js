@@ -10,7 +10,6 @@ const img =
 export const siteTitle = "SMG DayLog";
 
 export default function Layout({ children, home, dark }) {
-  console.log(dark);
   return (
     <Container dark={dark}>
       <div className={styles.wrapper}>
