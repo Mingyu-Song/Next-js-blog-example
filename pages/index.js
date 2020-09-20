@@ -9,15 +9,8 @@ import Sun from "../components/svg/sun";
 import Moon from "../components/svg/moon";
 import darkModeContext from "../context/darkMode";
 import { useContext } from "react";
-import { useRouter } from "next/router";
 
-export default function Home({ currentPage, pageLength, slicedPostsData }) {
-  const router = useRouter();
-  console.log(
-    slicedPostsData.length + "렝스",
-    currentPage + "페이지",
-    pageLength + "길이"
-  );
+export default function Home({ slicedPostsData }) {
   const darkModeChange = useContext(darkModeContext);
   const dark = darkModeChange[0];
   return (
@@ -47,63 +40,20 @@ export default function Home({ currentPage, pageLength, slicedPostsData }) {
             </li>
           ))}
         </ul>
-        <Pagination>
-          {Array(pageLength)
-            .fill()
-            .map((_, idx) => {
-              return (
-                <PaginationList
-                  onClick={() => router.push(`/${idx + 1}`)}
-                  currentPage={currentPage === idx}
-                >
-                  {idx + 1}
-                </PaginationList>
-              );
-            })}
-        </Pagination>
+        <div>1페이지</div>
+        <Link href="/2">
+          <a>2페이지</a>
+        </Link>
       </section>
     </Layout>
   );
 }
 
-export async function getStaticPaths() {
-  const postCount = getAllPostIds();
-  let pageCount = 1;
-  if (postCount.length % 3 !== 0) {
-    pageCount = parseInt(postCount.length / 3) + 1;
-  } else {
-    pageCount = postCount.length / 3;
-  }
-  const pages = () => {
-    return Array(pageCount)
-      .fill(0)
-      .map((x, i) => {
-        return {
-          params: {
-            page: (i + 1).toString(),
-          },
-        };
-      });
-  };
-  const paths = pages();
-
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const page = params.page - 1 || 0;
+export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
-  const slicedPostsData = allPostsData.slice(page * 3, page * 3 + 3);
+  const slicedPostsData = allPostsData.slice(0, 3);
   return {
     props: {
-      currentPage: page,
-      pageLength:
-        allPostsData.length % 3 !== 0
-          ? parseInt(allPostsData.length / 3) + 1
-          : allPostsData.length / 3,
       slicedPostsData,
     },
   };
@@ -142,14 +92,4 @@ const ToggleHandle = styled.div`
   background-color: ${(props) => (props.dark ? "black" : "white")};
   transform: ${(props) => (props.dark ? "translateX(calc(100% + 4px))" : "")};
   transition: 0.5s 0s ease;
-`;
-
-const Pagination = styled.ul`
-  list-style: none;
-  display: flex;
-`;
-
-const PaginationList = styled.li`
-  color: ${({ currentPage }) => currentPage && "red"};
-  margin: 10px;
 `;
