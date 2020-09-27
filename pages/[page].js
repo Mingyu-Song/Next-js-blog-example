@@ -18,8 +18,9 @@ export default function Home({ currentPage, pageLength, slicedPostsData }) {
     currentPage + "페이지",
     pageLength + "길이"
   );
-  const darkModeChange = useContext(darkModeContext);
-  const dark = darkModeChange[0];
+  // const darkModeChange = useContext(darkModeContext);
+  // const dark = darkModeChange[0];
+  const dark = true;
   return (
     <Layout home dark={dark}>
       <Head>

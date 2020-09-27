@@ -7,12 +7,22 @@ import Date from "../components/date";
 import styled from "styled-components";
 import Sun from "../components/svg/sun";
 import Moon from "../components/svg/moon";
-import darkModeContext from "../context/darkMode";
-import { useContext } from "react";
+// import darkModeContext from "../context/darkMode";
+import { useContext, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { darkModeAction } from "../reducers/darkMode";
 
 export default function Home({ slicedPostsData }) {
-  const darkModeChange = useContext(darkModeContext);
-  const dark = darkModeChange[0];
+  // const darkModeChange = useContext(darkModeContext);
+  // const dark = darkModeChange[0];
+  const dispatch = useDispatch(); // dispatch를 사용하기 쉽게 하는 hook
+  const dark = useSelector((state) => state.darkMode); // store의 state를 불러오는 hook   store의 state 중에서 count의 state를 불러온다.
+
+  const onClickChange = useCallback(() => {
+    // useCallback은 최적화를 위한 hook이다 이 앱에선 굳이 사용 안 해도 되는데 습관이 들면 좋기에 사용.
+    dispatch(darkModeAction());
+  }, []);
+
   return (
     <Layout home dark={dark}>
       <Head>
@@ -20,7 +30,8 @@ export default function Home({ slicedPostsData }) {
       </Head>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Logs</h2>
-        <Toggle onClick={() => darkModeChange[1](!dark)} dark={dark}>
+        {/* <Toggle onClick={() => darkModeChange[1](!dark)} dark={dark}> */}
+        <Toggle onClick={() => onClickChange()} dark={dark}>
           <ToggleHandle dark={dark} />
           <span>
             <Moon />
